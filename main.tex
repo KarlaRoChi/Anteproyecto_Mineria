@@ -489,18 +489,47 @@ de forma exhaustiva. Las actividades realizadas incluyen:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{1.png}
-    \caption{Distribución de la variable objetivo (\texttt{stroke}) y análisis del desbalance de
-             clases. Fuente: elaboración propia a partir del EDA (\texttt{02\_eda.ipynb}).}
+    \includegraphics[width=0.55\textwidth]{01_target_distribution.png}
+    \caption{Distribución de la variable objetivo (\texttt{stroke}): 4{,}612 casos negativos
+             (90.2\%) frente a 498 positivos (9.8\%), evidenciando el desbalance de clases 1:9.
+             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
     \label{fig:clase_desbalance}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{2.png}
-    \caption{Análisis bivariado: distribución de edad y nivel de glucosa en función de la clase
-             objetivo. Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
+    \includegraphics[width=\textwidth]{02_numeric_distributions.png}
+    \caption{Distribuciones de las variables numéricas \texttt{age}, \texttt{avg\_glucose\_level}
+             y \texttt{bmi}. Se observa asimetría positiva en glucosa y una distribución bimodal
+             en edad. Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
+    \label{fig:numeric_dist}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{03_numeric_vs_target.png}
+    \caption{Boxplots de variables numéricas por clase objetivo. Los pacientes con stroke presentan
+             medianas de edad y glucosa significativamente más altas.
+             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
     \label{fig:bivariado}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{04_categorical_vs_target.png}
+    \caption{Tasa de stroke (\%) por categoría para las 7 variables categóricas del dataset.
+             La hipertensión y la cardiopatía muestran las tasas de incidencia más elevadas.
+             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
+    \label{fig:cat_vs_target}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{05_correlation_matrix.png}
+    \caption{Matriz de correlación de Pearson para variables numéricas y binarias. La edad
+             presenta la correlación más alta con \texttt{stroke} ($r \approx 0.25$).
+             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
+    \label{fig:correlacion}
 \end{figure}
 
 \subsection{Fase 3: Preparación de los Datos (\texttt{03\_preprocessing.ipynb})}
@@ -561,26 +590,29 @@ precisión, F1-score, matriz de confusión y la importancia de variables del Ran
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.80\textwidth]{4.png}
-    \caption{Curvas ROC comparativas para Regresión Logística y Random Forest sobre el conjunto
-             de prueba. Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
+    \includegraphics[width=0.85\textwidth]{06_roc_curves.png}
+    \caption{Curvas ROC comparativas para Regresión Logística (AUC = 0.853) y Random Forest
+             (AUC = 0.872) sobre el conjunto de prueba. Ambos modelos superan la meta de
+             AUC $>$ 0.85. Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
     \label{fig:roc}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.80\textwidth]{5.png}
-    \caption{Matrices de confusión normalizadas para ambos modelos sobre el conjunto de prueba.
-             Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
+    \includegraphics[width=\textwidth]{07_confusion_matrices.png}
+    \caption{Matrices de confusión normalizadas para Regresión Logística y Random Forest sobre
+             el conjunto de prueba. El Random Forest obtiene un recall de 0.790 en la clase
+             positiva. Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
     \label{fig:confusion}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{6.png}
+    \includegraphics[width=0.80\textwidth]{08_feature_importance.png}
     \caption{Importancia de variables del modelo Random Forest (top-10 características por
-             disminución de impureza de Gini). Fuente: elaboración propia
-             (\texttt{05\_evaluation.ipynb}).}
+             disminución de impureza de Gini). \texttt{age}, \texttt{avg\_glucose\_level} y
+             \texttt{bmi} concentran más del 60\% de la importancia total.
+             Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
     \label{fig:feature_importance}
 \end{figure}
 
@@ -671,9 +703,11 @@ El EDA confirmó las hipótesis previas sobre los factores de riesgo más releva
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{7.png}
-    \caption{Tasas de incidencia de stroke por grupo de riesgo (hipertensión, cardiopatía) e
-             histograma de edad por clase. Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
+    \includegraphics[width=\textwidth]{04_categorical_vs_target.png}
+    \caption{Tasas de incidencia de stroke (\%) por variable categórica. Pacientes con
+             hipertensión ($\approx$15.8\%) o cardiopatía ($\approx$17.0\%) presentan tasas
+             cuatro veces superiores al promedio. Fuente: elaboración propia
+             (\texttt{02\_eda.ipynb}).}
     \label{fig:riesgo}
 \end{figure}
 
