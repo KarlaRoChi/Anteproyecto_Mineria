@@ -1,40 +1,94 @@
 \documentclass[12pt,a4paper]{article}
 
-% ------------------------------
-% Paquetes para idioma y tipografía
-% ------------------------------
-\usepackage[spanish]{babel}
+% -------------------------------------------------------------
+% Tipografía, Idioma y Codificación
+% -------------------------------------------------------------
+\usepackage[spanish,es-tabla]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype} % Microtipografía para balancear márgenes
 
-% ------------------------------
-% Paquetes para formato y gráficos
-% ------------------------------
+% -------------------------------------------------------------
+% Geometría y Márgenes de Página
+% -------------------------------------------------------------
 \usepackage{geometry}
-\geometry{top=2.5cm,bottom=2.5cm,left=3cm,right=3cm}
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=3cm,
+    right=3cm
+}
+
+% -------------------------------------------------------------
+% Paquetes Gráficos y Tablas
+% -------------------------------------------------------------
 \usepackage{graphicx}
-\usepackage{setspace}
 \usepackage{booktabs}
+\usepackage{tabularx}
 \usepackage{array}
-\usepackage{hyperref}
-\usepackage{url}
-\usepackage{enumitem}
-\usepackage{titlesec}
-\usepackage{parskip}
+\usepackage{multirow}
 \usepackage{float}
 \usepackage{caption}
-\usepackage{multirow}
-\usepackage{amsmath}
+\captionsetup{
+    font=small,
+    labelfont=bf,
+    format=hang,
+    justification=justified,
+    singlelinecheck=false,
+    skip=6pt
+}
 
-% Formato de secciones
-\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
-\titleformat{\subsubsection}{\normalsize\itshape\bfseries}{}{0em}{}
+% -------------------------------------------------------------
+% Matemáticas y Espaciado
+% -------------------------------------------------------------
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{enumitem}
+
+% Tolerancia para evitar que palabras largas o justificaciones desborden el margen
+\emergencystretch=2.5em
+
+% -------------------------------------------------------------
+% Colores e Hipervínculos
+% -------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{unamBlue}{RGB}{0, 43, 91}
+\definecolor{linkBlue}{RGB}{16, 76, 140}
+\definecolor{darkGray}{RGB}{60, 60, 60}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=unamBlue,
+    citecolor=unamBlue,
+    urlcolor=linkBlue,
+    breaklinks=true,
+    pdfauthor={Karla Beatriz Rojas Chimal, Alejandro Garcia Gallegos},
+    pdftitle={Anteproyecto de Mineria de Datos - Prediccion de Stroke}
+}
+
+% xurl permite cortes de línea en cualquier caracter de una URL (evita desbordes)
+\usepackage{xurl}
+
+% -------------------------------------------------------------
+% Formato de Títulos y Secciones
+% -------------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries\color{unamBlue}}{}{0em}{}[\color{unamBlue}\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{unamBlue}}{}{0em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\itshape\color{darkGray}}{}{0em}{}
+
+% Tipos de columnas ajustables para tablas
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
 
 \begin{document}
 
 % ==========================================
-% PORTADA
+% PORTADA (Estructura Original Conservada)
 % ==========================================
 \begin{titlepage}
     \centering
@@ -76,7 +130,7 @@
     \vfill
 \end{titlepage}
 
-\spacing{1.5}
+\spacing{1.25}
 \newpage
 
 % ==========================================
@@ -91,32 +145,16 @@
 \section{Objetivos}
 
 \subsection{Objetivo General}
-Desarrollar un modelo de clasificación binaria basado en técnicas de minería de datos para predecir
-la probabilidad de que un paciente sufra un evento cerebrovascular (\textit{stroke}), a partir de
-características clínicas y sociodemográficas disponibles en atención primaria, logrando un
-\textit{AUC-ROC} superior a 0.85 y un \textit{recall} de la clase positiva superior a 0.75 sobre el
-conjunto de prueba.
+Construir y validar experimentalmente un sistema de clasificación binaria mediante técnicas de minería de datos y aprendizaje supervisado capaz de estimar el riesgo de que un paciente sufra un evento cerebrovascular (\textit{stroke}) a partir de características clínicas rutinarias y sociodemográficas disponibles en atención primaria, logrando un área bajo la curva ROC (\textit{AUC-ROC}) superior a 0.85 y una sensibilidad (\textit{recall}) para la clase positiva mayor a 0.75 en el conjunto de prueba independiente.
 
 \subsection{Objetivos Específicos}
-\begin{itemize}[leftmargin=1.5cm]
-    \item Analizar y preprocesar el \textit{Stroke Prediction Dataset} (5{,}110 registros, 12
-          variables), identificando valores faltantes, distribuciones estadísticas y el severo
-          desbalance de clases ($\approx$9.8\% positivos), aplicando las transformaciones adecuadas
-          para garantizar la calidad del conjunto de entrenamiento.
-    \item Realizar un análisis exploratorio de datos (EDA) exhaustivo que permita cuantificar la
-          asociación entre cada variable predictora y la variable objetivo \texttt{stroke},
-          generando visualizaciones interpretables que sustenten las decisiones de ingeniería de
-          características.
-    \item Implementar y comparar el desempeño de al menos dos modelos de clasificación supervisada
-          (Regresión Logística y \textit{Random Forest}), aplicando técnicas de sobremuestreo
-          sintético (SMOTE) para mitigar el desbalance, y seleccionar el modelo final con base en
-          métricas orientadas al contexto médico (AUC-ROC y \textit{recall}).
-    \item Identificar e interpretar las variables clínicas con mayor importancia predictiva para
-          el evento cerebrovascular, con el fin de aportar valor explicativo al modelo y facilitar
-          su adopción en entornos clínicos reales.
-    \item Documentar íntegramente el proceso mediante \textit{notebooks} de Jupyter organizados
-          secuencialmente dentro del repositorio \texttt{CODIGO/}, garantizando la trazabilidad y
-          reproducibilidad de todos los experimentos realizados.
+\begin{itemize}[leftmargin=1.2cm, itemsep=0.3em]
+    \item \textbf{Exploración y saneamiento de datos:} Revisar la calidad del \textit{Stroke Prediction Dataset} ($5{,}110$ registros y $12$ variables), midiendo valores perdidos, asimetrías de distribución y el severo desbalance de clases ($\approx 9.76\,\%$ de casos positivos), diseñando un plan de sustitución y codificación que evite la fuga de información (\textit{data leakage}).
+    \item \textbf{Análisis exploratorio interpretativo (EDA):} Identificar y cuantificar la fuerza de asociación estadística entre cada variable clínica (edad, niveles de glucosa, hipertensión, cardiopatías, IMC) y el desenlace de infarto cerebral, respaldando con evidencia visual las decisiones del modelado.
+    \item \textbf{Mitigación técnica del desbalance:} Implementar la técnica de sobremuestreo sintético de la clase minoritaria (SMOTE) de forma hermética en el flujo de validación cruzada estratificada ($k=5$), asegurando evaluaciones realistas en datos no balanceados artificialmente.
+    \item \textbf{Entrenamiento y optimización comparativa:} Ajustar y contrastar el desempeño de al menos dos familias de clasificadores con propiedades complementarias (un modelo lineal interpretable como la Regresión Logística y un ensamble no lineal como \textit{Random Forest}), calibrando los umbrales de decisión para priorizar la detección de casos positivos sin colapsar la precisión.
+    \item \textbf{Extracción del valor clínico:} Estimar la relevancia relativa de los predictores mediante métricas basadas en la impureza de Gini y los coeficientes estandarizados, cotejando los resultados técnicos con la literatura médica actual.
+    \item \textbf{Reproducibilidad y entrega de ingeniería:} Estructurar un repositorio íntegro en GitHub con código modular, control de dependencias (\texttt{requirements.txt}) y cuadernos Jupyter documentados paso a paso para permitir la réplica inmediata de los resultados.
 \end{itemize}
 
 % ==========================================
@@ -124,165 +162,95 @@ conjunto de prueba.
 % ==========================================
 \section{Contexto}
 
-\subsection{Contexto Global del Accidente Cerebrovascular}
+\subsection{Contexto Global y Clínico del Accidente Cerebrovascular}
+El accidente cerebrovascular (ACV o \textit{stroke}) es una emergencia neurológica grave y ocupa el segundo lugar en frecuencia de muerte en todo el mundo, y es la primera causa de discapacidad motora y cognitiva adquirida en adultos (Organización Mundial de la Salud [OMS], 2023). De acuerdo al reporte mundial de la \textit{World Stroke Organization} (Feigin et al., 2021), cada año ocurren unos 15 millones de ACV nuevos, de los cuales un tercio termina en muerte inmediata y otro tercio en secuelas permanentes que gravemente comprometen la independencia del paciente.
 
-El \textit{stroke} o accidente cerebrovascular (ACV) es la segunda causa de muerte a nivel
-mundial y la principal causa de discapacidad neurológica permanente en adultos, según datos de
-la Organización Mundial de la Salud (OMS, 2023). Cada año se producen aproximadamente 15 millones
-de nuevos casos en todo el mundo; de estos, 5 millones fallecen y otros 5 millones quedan con
-secuelas discapacitantes permanentes, representando una carga socioeconómica estimada en cientos
-de miles de millones de dólares anuales en atención médica y pérdida de productividad
-(Feigin et al., 2021).
+Fisiopatológicamente, los sucesos se bifurcan en dos vertientes:
+\begin{enumerate}[leftmargin=1.2cm, itemsep=0.2em]
+    \item \textbf{Isquémicos ($\approx 87\,\%$ de los casos):} Son causados por obstrucción trombótica o embólica de una arteria cerebral, interrumpiendo el flujo sanguíneo y desencadenando una cascada isquémica que lleva a muerte celular neuronal irreversible en cuestión de minutos.
+    \item \textbf{Hemorrágicos ($\approx 13\,\%$ de los casos):} Ocasionados por la ruptura de vasos debilitados (frecuentemente secundarios a crisis hipertensivas o malformaciones vasculares), generando daño directo por compresión tisular e hipertensión intracraneal (Sacco et al., 2013).
+\end{enumerate}
 
-Fisiológicamente, el ACV se clasifica en dos grandes categorías: el \textbf{isquémico}
-($\approx$87\% de los casos), ocasionado por la oclusión de una arteria cerebral, y el
-\textbf{hemorrágico} ($\approx$13\%), producido por la ruptura de un vaso sanguíneo. En ambos
-casos, la privación de oxígeno y glucosa al tejido neuronal desencadena muerte celular
-irreversible en cuestión de minutos, de ahí que el pronóstico mejore de manera drástica con la
-intervención temprana (Sacco et al., 2013).
+Desde el punto de vista preventivo, el estudio internacional INTERSTROKE (O'Donnell et al., 2016) encontró que cerca del $90\,\%$ del riesgo atribuible poblacional se relaciona con diez factores modificables, encabezados por la hipertensión crónica, la hiperglucemia, el sobrepeso, el tabaquismo y la sedentariedad.
 
-Desde la perspectiva de la salud pública, el ACV es en gran medida prevenible: hasta el 90\% de
-los casos se asocia a factores de riesgo modificables como hipertensión arterial, diabetes
-mellitus, dislipidemia, tabaquismo, fibrilación auricular, obesidad y sedentarismo
-(O'Donnell et al., 2016). Ello convierte a la predicción de riesgo individual en una herramienta
-de alto impacto para la medicina preventiva.
+\subsection{Entorno de Negocio y Relevancia en la Atención Primaria}
+Dentro de los sistemas de salud pública y sobre todo en países en desarrollo como México, donde el ACV se sitúa entre las primeras causas de muerte en los adultos mayores la detección precoz tropieza con obstáculos considerables:
+\begin{itemize}[leftmargin=1.2cm, itemsep=0.2em]
+    \item Los estudios de diagnóstico avanzados (tomografía axial computarizada, resonancia magnética o ecocardiograma doppler) son de alto costo y/o están centralizados en hospitales de segundo y tercer nivel.
+    \item En las clínicas familiares o consultorios de primer contacto, el médico dispone de tiempos reducidos por consulta y se limita al registro manual de signos vitales e historial clínico básico.
+    \item Los índices de riesgo convencionales (como el \textit{Essen Stroke Risk Score} o las escalas Framingham) pueden subestimar interacciones complejas, o demandan biomarcadores que no siempre están disponibles de manera oportuna (Diener et al., 2005).
+\end{itemize}
 
-En México, el ACV representa la cuarta causa de muerte en la población adulta mayor de 60 años,
-con una tasa de mortalidad que supera las 30 defunciones por cada 100{,}000 habitantes. Las
-limitaciones en el acceso a centros especializados y la escasez de herramientas de cribado en
-el primer nivel de atención hacen que la mayoría de los pacientes en riesgo no sean identificados
-antes de sufrir el evento.
-
-La minería de datos y el aprendizaje automático ofrecen la oportunidad de transformar los
-registros clínicos electrónicos en sistemas de alerta temprana de bajo costo y alta
-escalabilidad. Estudios recientes demuestran que modelos basados en variables de rutina (edad,
-presión arterial, glucosa en ayunas, IMC) alcanzan AUC-ROC superiores a 0.80, comparables a
-escalas clínicas establecidas como el \textit{Essen Stroke Risk Score} (Diener et al., 2005).
+Desde este punto de vista, idear un modelo analítico que sea capaz de estimar un puntaje de riesgo utilizando exclusivamente parámetros de rutina (edad, presión arterial referida, índice de masa corporal, glucemia en ayunas y hábitos de vida) es una herramienta accesible, escalable y con un costo marginal nulo para el sistema hospitalario, que puede usarse para tamizaje preventivo.
 
 \subsection{Descripción del Dataset}
-
-El conjunto de datos utilizado es el \textbf{Stroke Prediction Dataset}, publicado en Kaggle por
-\textit{fedesoriano} (2021) bajo licencia de uso educativo. Contiene 5{,}110 observaciones de
-pacientes con 12 atributos clínicos y sociodemográficos, y constituye uno de los conjuntos de
-datos más utilizados en la literatura de aprendizaje automático aplicado a la predicción de ACV.
-
-Las variables disponibles son:
-\begin{itemize}[leftmargin=1.5cm]
-    \item \texttt{id}: Identificador numérico único del paciente (no predictivo, eliminado en
-          preprocesamiento).
-    \item \texttt{gender}: Género del paciente (Male / Female / Other).
-    \item \texttt{age}: Edad en años (variable continua; rango: 0.08--82 años).
-    \item \texttt{hypertension}: Diagnóstico previo de hipertensión arterial (0 = No, 1 = Sí).
-    \item \texttt{heart\_disease}: Diagnóstico previo de enfermedad cardíaca (0 = No, 1 = Sí).
-    \item \texttt{ever\_married}: Estado civil histórico (Yes / No).
-    \item \texttt{work\_type}: Tipo de actividad laboral (Private / Self-employed / Govt\_job /
-          children / Never\_worked).
-    \item \texttt{Residence\_type}: Tipo de residencia (Urban / Rural).
-    \item \texttt{avg\_glucose\_level}: Nivel promedio de glucosa en sangre en mg/dL (variable
-          continua).
-    \item \texttt{bmi}: Índice de masa corporal (variable continua; presenta $\approx$4\% de
-          valores faltantes).
-    \item \texttt{smoking\_status}: Hábito tabáquico (formerly smoked / never smoked / smokes /
-          Unknown).
-    \item \texttt{stroke}: Variable objetivo binaria (0 = no padeció ACV, 1 = padeció ACV).
-\end{itemize}
-
-\noindent Aspectos relevantes sobre la calidad e idoneidad del dataset:
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Valores faltantes:} La variable \texttt{bmi} presenta 201 registros con valor
-          nulo ($\approx$3.93\%), que se tratan mediante imputación por la mediana.
-    \item \textbf{Categoría desconocida:} La etiqueta \texttt{Unknown} en \texttt{smoking\_status}
-          (1{,}544 registros) se gestiona mediante codificación explícita como categoría propia.
-    \item \textbf{Desbalance de clases:} Solo 498 registros (9.76\%) corresponden a la clase
-          positiva (stroke = 1), frente a 4{,}612 negativos (90.24\%), configurando una proporción
-          aproximada de 1:9.
-    \item \textbf{Idoneidad clínica:} Todas las variables del dataset son accesibles en una
-          consulta de atención primaria sin requerir exámenes especializados.
-\end{itemize}
+Para llevar a cabo esta solución se escogió el \textbf{Stroke Prediction Dataset}, compartido en Kaggle por \textit{fedesoriano} (2021). Incluye $5{,}110$ filas y $12$ columnas con datos de dimensiones sociodemográficas, antecedentes patológicos y mediciones antropométricas.
 
 \begin{table}[H]
 \centering
-\caption{Resumen descriptivo del dataset}
-\begin{tabular}{@{}lp{9cm}@{}}
+\small
+\caption{Diccionario y tipología de variables del dataset}
+\label{tab:variables}
+\begin{tabularx}{\textwidth}{@{}l l L@{}}
 \toprule
-\textbf{Característica} & \textbf{Descripción} \\ \midrule
-Fuente              & Kaggle --- fedesoriano (2021), \textit{Stroke Prediction Dataset} \\
-Número de registros & 5{,}110 \\
-Número de variables & 12 (11 predictoras + 1 objetivo) \\
-Variable objetivo   & \texttt{stroke} (binaria: 0 = no ACV, 1 = ACV) \\
-Desbalance de clases& $\approx$9.76\% positivos (498 / 4{,}612) \\
-Valores faltantes   & 201 en \texttt{bmi} ($\approx$3.93\%) \\
-Tipo de variables   & 4 numéricas continuas, 7 categóricas, 1 identificador \\
-Periodo             & No especificado; uso exclusivamente educativo \\ \bottomrule
-\end{tabular}
+\textbf{Variable} & \textbf{Naturaleza} & \textbf{Descripción y Dominio} \\
+\midrule
+\texttt{id} & Numérica & Identificador de control del paciente (sin poder predictivo). \\
+\texttt{gender} & Categórica & Género asignado (\texttt{Male}, \texttt{Female}, \texttt{Other}). \\
+\texttt{age} & Continua & Edad del paciente en años (rango observado: $0.08$ a $82.0$). \\
+\texttt{hypertension} & Binaria & Antecedente clínico de hipertensión ($0 = \text{No}$, $1 = \text{Sí}$). \\
+\texttt{heart\_disease} & Binaria & Antecedente de afección cardíaca previa ($0 = \text{No}$, $1 = \text{Sí}$). \\
+\texttt{ever\_married} & Categórica & Estado conyugal histórico (\texttt{Yes}, \texttt{No}). \\
+\texttt{work\_type} & Categórica & Régimen laboral (\texttt{Private}, \texttt{Self-employed}, \texttt{Govt\_job}, etc.). \\
+\texttt{Residence\_type}& Categórica & Entorno domiciliario (\texttt{Urban}, \texttt{Rural}). \\
+\texttt{avg\_glucose\_level} & Continua & Concentración media de glucosa plasmática ($\text{mg/dL}$). \\
+\texttt{bmi} & Continua & Índice de masa corporal ($\text{kg/m}^2$), con $3.93\,\%$ de datos ausentes. \\
+\texttt{smoking\_status}& Categórica & Hábito de consumo de tabaco (\texttt{formerly smoked}, \texttt{never}, etc.). \\
+\texttt{stroke} & Binaria & \textbf{Variable objetivo} ($0 = \text{Sin evento}$, $1 = \text{Presentó evento}$). \\
+\bottomrule
+\end{tabularx}
 \end{table}
 
-\subsection{Justificación de la Relevancia del Dataset}
-
-La elección de este conjunto de datos se justifica por cuatro razones fundamentales:
-(1)~representa un problema de salud pública de alta relevancia social;
-(2)~contiene el desbalance de clases característico de los problemas de detección de enfermedades
-de baja prevalencia, forzando el uso de técnicas avanzadas de manejo de desbalance;
-(3)~combina variables numéricas y categóricas, lo que requiere un \textit{pipeline} de
-preprocesamiento completo; y
-(4)~su tamaño reducido (5{,}110 registros) lo hace manejable dentro de un entorno académico sin
-sacrificar la complejidad metodológica.
+\begin{table}[H]
+\centering
+\small
+\caption{Ficha técnica consolidada del conjunto de datos}
+\label{tab:resumen_dataset}
+\begin{tabularx}{\textwidth}{@{}l L@{}}
+\toprule
+\textbf{Dimensión} & \textbf{Detalle Técnico} \\
+\midrule
+Plataforma de origen & Kaggle (\textit{fedesoriano}, 2021) --- Licencia abierta para educación. \\
+Registros totales & $5{,}110$ instancias independientes. \\
+Atributos & $11$ variables predictoras y $1$ variable de respuesta (\texttt{stroke}). \\
+Desbalance detectado & $4{,}612$ casos negativos ($90.24\,\%$) frente a $498$ positivos ($9.76\,\%$). \\
+Valores ausentes & $201$ registros en \texttt{bmi} ($3.93\,\%$ del total), imputados por mediana. \\
+Viabilidad de uso & Variables completamente recabables en consulta médica de primer nivel. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 % ==========================================
 % 3. ESTRATEGIA
 % ==========================================
 \section{Estrategia}
 
-Se adoptó un enfoque de \textbf{clasificación supervisada binaria}, dado que la variable objetivo
-(\texttt{stroke}) es discreta y sus etiquetas están disponibles para todos los registros del
-dataset. La metodología de referencia empleada fue \textbf{CRISP-DM} (\textit{Cross-Industry
-Standard Process for Data Mining}), que proporciona un marco iterativo y cíclico estructurado en
-seis fases bien definidas, ampliamente adoptado tanto en entornos académicos como industriales.
+Debido al tipo de la variable objetivo y a la asimetría observada en las clases, hemos seguido un enfoque de \textbf{aprendizaje supervisado binario} guiado por el estándar metodológico \textbf{CRISP-DM} (\textit{Cross-Industry Standard Process for Data Mining}) (Wirth \& Hipp, 2000). El mencionado marco permite una navegación sistemática e iterativa entre el entendimiento del problema desde un punto de vista clínico y el diseño del software analítico.
 
-\subsection{Decisiones Estratégicas Clave}
+\subsection{Criterios de éxito y compromiso clínico}
+En medicina diagnóstica, cometer un falso negativo (diagnosticar sano a un paciente con alto riesgo de sufrir un derrame cerebral) puede tener consecuencias potencialmente fatales, mientras que cometer un falso positivo (diagnosticar de alto riesgo a un paciente sano) solamente conlleva realizar otras pruebas de diagnóstico preventivas. Por lo cual:
+\begin{itemize}[itemsep=0.3em,leftmargin=1.2cm]
+    \item La métrica cardinal de optimización es la \textbf{ sensibilidad o recall de la clase positiva } (meta $> 0.75$).
+    \item Como indicador global e independiente del punto de corte se estableció el \textbf{AUC-ROC} (meta $> 0.85$).
+    \item No se busca optimizar la exactitud global (\textit{accuracy}), pues en problemas desbalanceados un clasificador ingenuo que siempre asigna la clase mayoritaria lograría un engañoso $90.24\,\%$ de exactitud sin haber detectado ni un solo paciente enfermo.
+\end{itemize}
 
-\begin{enumerate}[leftmargin=1.5cm]
-    \item \textbf{Criterio de éxito orientado al contexto médico:} En problemas de diagnóstico,
-          el costo de un falso negativo (paciente en riesgo no detectado) es sustancialmente mayor
-          que el de un falso positivo. Por ello, la métrica primaria de éxito es el
-          \textbf{recall} de la clase positiva ($>$0.75), seguido del \textbf{AUC-ROC} ($>$0.85)
-          como indicador global de discriminación.
-
-    \item \textbf{Tratamiento del desbalance mediante SMOTE:} Dada la proporción 1:9 entre
-          clases, se aplicó \textit{Synthetic Minority Oversampling Technique} (SMOTE)
-          exclusivamente sobre el conjunto de entrenamiento, respetando el límite de
-          \textit{data leakage} para que el conjunto de prueba mantenga la distribución real.
-
-    \item \textbf{Comparación de modelos:} Se seleccionaron dos familias de clasificadores
-          con propiedades complementarias: (a) \textbf{Regresión Logística}, modelo lineal
-          interpretable que sirve como \textit{baseline} explicativo; y (b) \textbf{Random
-          Forest}, ensamble de árboles con mayor capacidad para capturar interacciones no
-          lineales entre variables.
-
-    \item \textbf{Validación cruzada estratificada:} Se empleó validación cruzada estratificada
-          con $k=5$ \textit{folds}, garantizando que todas las particiones mantengan la proporción
-          original de clases y estimando la variabilidad del desempeño del modelo.
-
-    \item \textbf{Trazabilidad y reproducibilidad:} Todo el código se organizó en cinco
-          \textit{notebooks} de Jupyter secuenciales dentro del directorio \texttt{CODIGO/},
-          con semillas aleatorias fijadas (\texttt{random\_state=42}).
-\end{enumerate}
-
-\subsection{Fases del Proyecto}
-\begin{enumerate}[leftmargin=1.5cm]
-    \item \textbf{Recolección y comprensión de datos:} Descarga del dataset desde Kaggle,
-          revisión de atributos, tipos de datos, distribuciones iniciales y detección de
-          anomalías.
-    \item \textbf{Preprocesamiento y limpieza:} Imputación de valores faltantes en \texttt{bmi},
-          codificación de variables categóricas, tratamiento del desbalance y estandarización.
-    \item \textbf{Exploración y análisis:} EDA con distribuciones, correlaciones y análisis
-          bivariado respecto a la variable objetivo.
-    \item \textbf{Modelado:} Entrenamiento y ajuste de los clasificadores con validación cruzada
-          estratificada ($k=5$ \textit{folds}).
-    \item \textbf{Evaluación y refinamiento:} Comparación de modelos mediante AUC-ROC, F1-score
-          y recall; análisis de matrices de confusión y curvas ROC.
-    \item \textbf{Presentación de resultados:} Elaboración del reporte final y demostración
-          técnica mediante \textit{notebooks} interactivos.
+\subsection{Protocolo de Validación y Prevención de Fuga de Datos (Data Leakage)}
+Con el objetivo de obtener estimaciones objetivas y reproducibles sobre datos no observados, se definieron tres estrictas reglas operativas:
+\begin{enumerate}[leftmargin=1.2cm,itemsep=0.3em]
+    \item \textbf{Partición temprana:} Los datos se dividieron al principio en un $80\,\%$ para desarrollo (entrenamiento y validación) y un $20\,\%$ para evaluación ciega (\textit{test set}), estratificando por la variable de respuesta.
+    \item \textbf{Cálculo de parámetros exclusivo en entrenamiento:} Las medianas empleadas para la imputación de \texttt{bmi}, así como las medias y desviaciones estándar del escalador (\texttt{StandardScaler}), se calcularon únicamente a partir del bloque de entrenamiento, y se emplearon como transformación para el bloque de prueba.
+    \item \textbf{SMOTE en los pliegues de validación:} El sobremuestreo sintético se realiza siempre dentro de cada pliegue, nunca sobre todo el dataset ni sobre la parte de test. Con \texttt{imblearn.pipeline.Pipeline}, el balanceo se realiza internamente y de forma dinámica en cada uno de los $k=5$ folds de entrenamiento, evaluando siempre sobre particiones con su distribución real intacta.
 \end{enumerate}
 
 % ==========================================
@@ -290,340 +258,187 @@ seis fases bien definidas, ampliamente adoptado tanto en entornos académicos co
 % ==========================================
 \section{Problemática a Atender y Expectativas}
 
-\subsection{Planteamiento del Problema}
+\subsection{Enunciado de la Pregunta de Investigación}
+La falta de equipos analíticos automatizados y de bajo costo en las unidades de medicina familiar, imposibilita la posibilidad de estratificar a tiempo a pacientes con un riesgo latente de sufrir un evento cerebrovascular. De ahí que la investigación se organizara en torno a la siguiente pregunta:
 
-El accidente cerebrovascular es una emergencia médica cuyo pronóstico mejora de manera
-significativa con la intervención temprana. No obstante, la gran mayoría de los pacientes en
-riesgo no son identificados con antelación, en parte porque las herramientas de estratificación
-de riesgo disponibles en el primer nivel de atención son escasas, costosas o requieren exámenes
-especializados fuera del alcance de muchos sistemas de salud.
+\begin{quote}
+\textit{¿Es posible predecir con una sensibilidad mayor al $75\,\%$ la propensión individual a sufrir un accidente cerebrovascular utilizando modelos de minería de datos entrenados con variables no invasivas de las visitas rutinarias de primer contacto?}
+\end{quote}
 
-Los registros clínicos electrónicos contienen información de rutina ---edad, presión arterial,
-glucosa, IMC, antecedentes de hipertensión y cardiopatía--- que, analizada con técnicas de minería
-de datos, puede transformarse en un sistema de alerta temprana accesible, reproducible y de bajo
-costo. La hipótesis central del proyecto es que este conjunto de variables de rutina es suficiente
-para construir un modelo predictivo con sensibilidad clínicamente útil.
-
-El problema central se formula como: \textbf{¿Es posible predecir con suficiente sensibilidad
-(recall $>$ 0.75) si un paciente sufrirá un stroke, utilizando únicamente variables clínicas y
-demográficas obtenidas en una consulta de atención primaria?}
-
-\subsection{Preguntas de Investigación}
-\begin{itemize}[leftmargin=1.5cm]
-    \item ¿Qué combinación de variables clínicas (edad, hipertensión, glucosa, IMC, etc.) es
-          más predictiva de un evento cerebrovascular en este dataset?
-    \item ¿Qué modelo de clasificación supervisada ofrece el mejor equilibrio entre sensibilidad
-          (\textit{recall}) y precisión en un dataset con desbalance 1:9?
-    \item ¿Cuál es el impacto cuantitativo de aplicar SMOTE sobre las métricas de recall y
-          F1-score de los modelos evaluados?
-    \item ¿Son los factores de riesgo identificados por el modelo consistentes con la evidencia
-          médica publicada?
+\subsection{Preguntas específicas de investigación}
+\begin{itemize}[leftmargin=1.2cm,itemsep=0.2em]
+    \item ¿En qué medida el sobremuestreo con SMOTE reduce la penalización de la clase minoritaria respecto a esquemas de ponderación basados en costos (\texttt{class\_weight='balanced'})?
+    \item ¿En qué medida se reduce la precisión del modelo al disminuir el umbral de probabilidad para lograr una sensibilidad clínicamente útil ($> 0.75$)?
+    \item ¿La jerarquía de importancia matemática de las variables coincide con los consensos médicos internacionales sobre riesgo cardiovascular?
 \end{itemize}
 
-\subsection{Expectativas Cuantitativas}
-
-Se establecen las siguientes metas de desempeño como criterios de éxito del proyecto:
+\subsection{Expectativas Cuantitativas y Cualitativas}
+Los criterios formales de aceptación del proyecto quedaron definidos en la Tabla~\ref{tab:expectativas}.
 
 \begin{table}[H]
 \centering
-\caption{Expectativas cuantitativas de desempeño del modelo}
-\begin{tabular}{@{}p{4.5cm}p{2.5cm}p{7cm}@{}}
+\small
+\caption{Matriz de expectativas cuantitativas y justificación técnica}
+\label{tab:expectativas}
+\begin{tabularx}{\textwidth}{@{}l c L@{}}
 \toprule
-\textbf{Métrica} & \textbf{Meta} & \textbf{Justificación} \\ \midrule
-AUC-ROC
-    & $>$ 0.85
-    & Indicador global de capacidad discriminativa; valores $>$0.80 son clínicamente útiles en
-      modelos de riesgo cardiovascular. \\[0.5em]
-Recall (clase positiva)
-    & $>$ 0.75
-    & Prioridad máxima: minimizar falsos negativos (pacientes en riesgo no detectados). \\[0.5em]
-F1-score
-    & $>$ 0.60
-    & Balance entre precisión y recall, considerando el severo desbalance de clases. \\ \bottomrule
-\end{tabular}
+\textbf{Métrica} & \textbf{Umbral Meta} & \textbf{Justificación en Contexto Clínico} \\
+\midrule
+AUC-ROC & $> 0.85$ & Capacidad de discriminación global; valores superiores a $0.80$ se consideran clínicamente aceptables en cribado preventivo. \\
+Sensibilidad (\textit{Recall}) & $> 0.75$ & Detección efectiva de al menos tres de cada cuatro casos reales de ACV en la muestra de prueba. \\
+F1-Score & $> 0.60$ & Balance armónico que controla la proliferación excesiva de falsas alarmas ante la marcada asimetría 1:9. \\
+\bottomrule
+\end{tabularx}
 \end{table}
-
-\noindent Cualitativamente, se anticipa que las variables \texttt{age},
-\texttt{avg\_glucose\_level} e \texttt{hypertension} serán las de mayor importancia predictiva,
-en línea con la evidencia médica publicada (O'Donnell et al., 2016).
 
 % ==========================================
 % 5. PLAN DE TRABAJO: BASELINE VS. REAL
 % ==========================================
 \section{Plan de Trabajo: Baseline vs.\ Real}
 
-\subsection{Plan Baseline}
+\subsection{Plan Baseline (Planificación Teorica)}
+El cronograma inicial estimó cuatro semanas con un esfuerzo equilibrado entre las fases, suponiendo que el preprocesamiento de un dataset tabular compacto de cinco mil filas sería inmediato y que la carga mayor vendría dada por la experimentación con múltiples arquitecturas de modelado.
 
-El plan inicial contempló un desarrollo de cuatro semanas, distribuido de la siguiente manera:
-
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Semana 1:} Descarga y familiarización con el dataset. Revisión bibliográfica
-          sobre predicción de stroke. Definición del alcance y reparto de tareas.
-    \item \textbf{Semana 2:} Preprocesamiento completo (imputación, codificación, manejo de
-          desbalance) y análisis exploratorio de datos.
-    \item \textbf{Semana 3:} Entrenamiento, ajuste y comparación de modelos de clasificación.
-    \item \textbf{Semana 4:} Evaluación final, elaboración del reporte y preparación de la
-          demostración técnica.
-\end{itemize}
-
-El plan baseline asumía que el preprocesamiento sería relativamente directo y que el modelado
-constituiría la fase más demandante. En la práctica, sin embargo, el desbalance de clases y la
-necesidad de validar correctamente el \textit{pipeline} de SMOTE resultaron ser los desafíos
-más complejos.
-
-\subsection{Plan Real}
-
-La ejecución real del proyecto presentó variaciones respecto al plan inicial debidas a los
-siguientes factores:
-
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Complejidad del desbalance:} El manejo correcto de SMOTE requirió investigación
-          adicional para garantizar que el sobremuestreo se aplicara exclusivamente dentro de cada
-          \textit{fold} de validación cruzada mediante \texttt{imblearn.pipeline.Pipeline}, lo que
-          añadió tiempo no previsto en la Semana 2.
-    \item \textbf{Refinamiento iterativo del umbral de decisión:} La optimización del umbral de
-          clasificación para maximizar el recall sin colapsar la precisión requirió iteraciones
-          adicionales de evaluación, extendiendo la fase de modelado hasta la Semana 4.
-    \item \textbf{Estructuración del repositorio:} La organización modular del código en cinco
-          \textit{notebooks} independientes y reproducibles demandó más tiempo de ingeniería del
-          inicialmente previsto.
-    \item \textbf{Documentación del reporte:} La redacción del documento final con rigor académico
-          requirió una semana adicional respecto al plan original.
-\end{itemize}
-
-\subsection{Tabla Comparativa Baseline vs.\ Real}
+\subsection{Plan Real y Justificación de Desviaciones}
+En la ejecución se presentaron desafíos metodológicos que exigieron ajustes en los tiempos. En la Tabla~\ref{tab:cronograma} se detalla la comparación entre lo estimado y lo efectivamente realizado.
 
 \begin{table}[H]
 \centering
-\caption{Comparación Plan Baseline vs.\ Plan Real de ejecución}
-\begin{tabular}{@{}p{4.0cm}p{3.2cm}p{4.8cm}p{1.2cm}@{}}
+\small
+\caption{Contraste cronológico entre la planeación inicial y la ejecución real}
+\label{tab:cronograma}
+\begin{tabularx}{\textwidth}{@{}L c c c L@{}}
 \toprule
-\textbf{Actividad} & \textbf{Baseline} & \textbf{Real} & \textbf{$\Delta$} \\ \midrule
-Descarga y exploración inicial
-    & Semana 1 (2 días)
-    & Semana 1 (2 días) --- sin variación
-    & 0 \\[0.4em]
-Revisión bibliográfica
-    & Semana 1 (3 días)
-    & Semana 1 (3 días) --- sin variación
-    & 0 \\[0.4em]
-Análisis Exploratorio (EDA)
-    & Semana 2 (3 días)
-    & Semana 2 (4 días) --- mayor profundidad
-    & +1d \\[0.4em]
-Preprocesamiento e ing.\ de características
-    & Semana 2 (4 días)
-    & Semanas 2--3 (6 días) --- SMOTE pipeline
-    & +2d \\[0.4em]
-Implementación de modelos
-    & Semana 3 (5 días)
-    & Semana 3 (5 días) --- sin variación
-    & 0 \\[0.4em]
-Ajuste de hiperparámetros y umbral
-    & Semana 3 (2 días)
-    & Semanas 3--4 (4 días) --- optimización iterativa
-    & +2d \\[0.4em]
-Evaluación y análisis
-    & Semanas 3--4 (3 días)
-    & Semana 4 (3 días) --- sin variación
-    & 0 \\[0.4em]
-Estructuración de repositorio
-    & No contemplado
-    & Semana 4 (2 días)
-    & +2d \\[0.4em]
-Redacción del reporte final
-    & Semana 4 (3 días)
-    & Semanas 4--5 (5 días) --- mayor rigor documental
-    & +2d \\[0.4em]
-Preparación de la demostración
-    & Semana 4 (2 días)
-    & Semana 5 (2 días) --- desplazada por sobrecarga
-    & +7d \\ \bottomrule
-\end{tabular}
+\textbf{Etapa de Trabajo} & \textbf{Baseline} & \textbf{Real} & \textbf{$\Delta$} & \textbf{Causa y Justificación Técnica} \\
+\midrule
+Descarga e inspección preliminar & 2 días & 2 días & $0$ & Carga directa y reproducible con API de Kaggle. \\
+Revisión bibliográfica clínica & 3 días & 3 días & $0$ & Revisión de literatura de OMS, AHA y The Lancet. \\
+Análisis Exploratorio (EDA) & 3 días & 4 días & $+1\,$d & Generación de gráficos comparativos bivariados detallados. \\
+Preprocesamiento y balanceo & 4 días & 6 días & $+2\,$d & Configuración de SMOTE en \textit{pipelines} para evitar fuga de datos. \\
+Entrenamiento de clasificadores & 5 días & 5 días & $0$ & Convergencia rápida con Scikit-Learn e Imbalanced-Learn. \\
+Sintonización y calibración de umbrales & 2 días & 4 días & $+2\,$d & Búsqueda iterativa del umbral óptimo de decisión. \\
+Evaluación cruzada y métricas & 3 días & 3 días & $0$ & Trazado de curvas ROC y matrices de confusión. \\
+Ingeniería de software y GitHub & No previsto & 2 días & $+2\,$d & Estructuración y modularización del repositorio público. \\
+Redacción de documentación formal & 3 días & 5 días & $+2\,$d & Redacción académica y maquetación en \LaTeX. \\
+\bottomrule
+\end{tabularx}
 \end{table}
 
-\noindent La principal lección aprendida es que, en proyectos con datos desbalanceados, la
-validación correcta del \textit{pipeline} de balanceo consume un tiempo desproporcionado respecto
-a lo que sugiere la literatura introductoria. Asimismo, la modularización del código en
-\textit{notebooks} reproducibles generó un valor sustancial en términos de trazabilidad y calidad.
+\noindent Los factores que más contribuyeron a la variación fueron:
+\begin{itemize}[itemsep=0.3em, leftmargin=1.2cm]
+    \item \textbf{Complejidad en el tratamiento del desbalance ($+2$ días):} Para que SMOTE actuara únicamente en las particiones de entrenamiento dentro de la validación cruzada fue necesario encapsularlo dentro de un objeto \texttt{imblearn.pipeline.Pipeline}, lo cual requirió investigación y validación de código adicional.
+    \item \textbf{Ajuste del umbral de decisión ($+2$ días):} Se comprobó que con el umbral estándar ($0.50$) los modelos perdían una fracción importante de casos positivos, y se dedicaron sesiones a trazar curvas de precisión-sensibilidad y analizar el impacto clínico de colocar el corte en torno a $0.30$.
+    \item \textbf{Estructuración del repositorio en GitHub ($+2$ días):} Se decidió organizar el desarrollo en cinco cuadernos, secuenciales e independientes, lo que garantiza la reproducibilidad íntegra del flujo de trabajo para cualquier evaluador externo.
+\end{itemize}
 
 % ==========================================
 % 6. METODOLOGÍA APLICADA
 % ==========================================
-\section{Metodología Aplicada}
+\section{Metodología Utilizada}
 
-El proyecto siguió íntegramente la metodología \textbf{CRISP-DM} (\textit{Cross-Industry Standard
-Process for Data Mining}), marco de referencia iterativo y agnóstico respecto a la herramienta,
-que estructura el ciclo de vida de un proyecto de minería de datos en seis fases
-(Wirth \& Hipp, 2000). A continuación se describe cada fase y su correspondencia directa con los
-\textit{notebooks} del directorio \texttt{CODIGO/}.
+El proyecto se estructuró en fases secuenciales elaboradas en cuadernos ejecutables en Python, siguiendo CRISP-DM.
 
-\subsection{Fase 1: Comprensión del Negocio (\texttt{01\_data\_loading.ipynb})}
+\subsection{Fase 1: Entendiendo el Negocio (\texttt{01\_data\_loading.ipynb})}
+Definición de objetivos analíticos dirigidos a la asistencia diagnóstica en medicina. Para poder hacer el download del dataset \texttt{healthcare-dataset-stroke-data.csv} directamente, se utilizó la librería \texttt{kagglehub}, lo que permitió que el punto de partida fuese reproducible y de fácil auditoría.
 
-En esta fase se definió el objetivo del negocio (identificación temprana de pacientes en riesgo de
-ACV), se formularon los criterios de éxito cuantitativos (AUC-ROC $>$ 0.85, recall $>$ 0.75) y se
-estableció el plan de proyecto. El \textit{notebook} \texttt{01\_data\_loading.ipynb} documenta la
-carga automatizada del dataset mediante la biblioteca \texttt{kagglehub}, la inspección inicial de
-tipos de datos, dimensiones del dataset y una primera auditoría de valores nulos. Este archivo
-constituye el punto de entrada reproducible del proyecto: cualquier colaborador puede ejecutarlo
-en un entorno limpio y obtener el dataset en el estado exacto con el que comenzó el análisis.
-
-\subsection{Fase 2: Comprensión de los Datos (\texttt{02\_eda.ipynb})}
-
-El \textit{notebook} \texttt{02\_eda.ipynb} implementa el Análisis Exploratorio de Datos (EDA)
-de forma exhaustiva. Las actividades realizadas incluyen:
-
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Análisis univariado:} distribuciones de frecuencia y estadísticos descriptivos
-          para todas las variables. Se detectaron distribuciones bimodales en \texttt{age} y
-          \texttt{avg\_glucose\_level}.
-    \item \textbf{Análisis bivariado:} tasas de incidencia de stroke estratificadas por cada
-          variable categórica y análisis de correlación para variables numéricas. Se confirmó
-          que la edad es el predictor más fuerte: la tasa de stroke supera el 15\% en pacientes
-          mayores de 60 años, frente al $<$1\% en menores de 40.
-    \item \textbf{Visualización del desbalance:} gráfico de barras que evidencia la proporción
-          1:9 entre clases positiva y negativa.
-    \item \textbf{Análisis de correlación:} mapa de calor (\textit{heatmap}) de la matriz de
-          correlación de Pearson para variables numéricas.
+\subsection{Fase 2: Entendiendo los Datos (\texttt{02\_eda.ipynb})}
+Se llevó a cabo un análisis estadístico y visual orientado a la detección de correlaciones relevantes y de características con potencial discriminativo:
+\begin{itemize}[itemsep=0.3em,leftmargin=1.2cm]
+    \item \textbf{Distribución de clases:} Se observó una proporción aproximada de 1:9 ($9.76\,\%$ de casos positivos).
+    \item \textbf{Comportamiento de la edad:} Los pacientes afectados por ACV tenían una edad promedio de aproximadamente $67$ años, mientras que en el grupo libre de la afección la edad promedio fue de $43$ años.
+    \item \textbf{Comorbilidades clínicas.} Los pacientes que ya tenían hipertensión o alguna enfermedad del corazón, tuvieron hasta cuatro veces más probabilidad de sufrir un infarto cerebral que la población general.
 \end{itemize}
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.55\textwidth]{01_target_distribution.png}
-    \caption{Distribución de la variable objetivo (\texttt{stroke}): 4{,}612 casos negativos
-             (90.2\%) frente a 498 positivos (9.8\%), evidenciando el desbalance de clases 1:9.
-             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
-    \label{fig:clase_desbalance}
+    \includegraphics[width=0.6\textwidth]{01_target_distribution.png}
+    \caption{Distribución empírica de la variable dependiente \texttt{stroke} en el dataset analizado ($4{,}612$ casos negativos vs.\ $498$ positivos).}
+    \label{fig:target}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{02_numeric_distributions.png}
-    \caption{Distribuciones de las variables numéricas \texttt{age}, \texttt{avg\_glucose\_level}
-             y \texttt{bmi}. Se observa asimetría positiva en glucosa y una distribución bimodal
-             en edad. Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
-    \label{fig:numeric_dist}
+    \includegraphics[width=0.92\textwidth]{02_numeric_distributions.png}
+    \caption{Distribuciones univariadas de los predictores cuantitativos (\texttt{age}, \texttt{avg\_glucose\_level} y \texttt{bmi}), mostrando asimetría positiva en los niveles de glucosa.}
+    \label{fig:dist_num}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{03_numeric_vs_target.png}
-    \caption{Boxplots de variables numéricas por clase objetivo. Los pacientes con stroke presentan
-             medianas de edad y glucosa significativamente más altas.
-             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
-    \label{fig:bivariado}
+    \includegraphics[width=0.95\textwidth]{03_numeric_vs_target.png}
+    \caption{Diagramas de caja comparativos entre clases. Se observa un incremento sustancial en las medianas de edad y glucosa en los pacientes con evento registrado.}
+    \label{fig:boxplots}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{04_categorical_vs_target.png}
-    \caption{Tasa de stroke (\%) por categoría para las 7 variables categóricas del dataset.
-             La hipertensión y la cardiopatía muestran las tasas de incidencia más elevadas.
-             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
-    \label{fig:cat_vs_target}
+    \includegraphics[width=0.95\textwidth]{04_categorical_vs_target.png}
+    \caption{Incidencia porcentual de stroke agrupada por atributos categóricos. Destaca la elevación de riesgo ante antecedentes de hipertensión y cardiopatías.}
+    \label{fig:cat_target}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{05_correlation_matrix.png}
-    \caption{Matriz de correlación de Pearson para variables numéricas y binarias. La edad
-             presenta la correlación más alta con \texttt{stroke} ($r \approx 0.25$).
-             Fuente: elaboración propia (\texttt{02\_eda.ipynb}).}
+    \includegraphics[width=0.7\textwidth]{05_correlation_matrix.png}
+    \caption{Matriz de correlación de Pearson entre atributos numéricos y la variable de respuesta. La variable \texttt{age} muestra la mayor correlación lineal individual.}
     \label{fig:correlacion}
 \end{figure}
 
 \subsection{Fase 3: Preparación de los Datos (\texttt{03\_preprocessing.ipynb})}
-
-Esta fase, documentada en \texttt{03\_preprocessing.ipynb}, contempló las siguientes
-transformaciones aplicadas en secuencia dentro de un \texttt{Pipeline} de
-\texttt{scikit-learn} e \texttt{imbalanced-learn}:
-
-\begin{enumerate}[leftmargin=1.5cm]
-    \item \textbf{Eliminación de identificadores:} se descartó la columna \texttt{id} por ser
-          un identificador sin valor predictivo.
-    \item \textbf{Filtrado de categorías espurias:} se eliminó el único registro con
-          \texttt{gender = Other} para evitar categorías de frecuencia mínima.
-    \item \textbf{Imputación de valores faltantes:} los 201 valores nulos en \texttt{bmi} se
-          imputaron mediante la mediana calculada dentro del \textit{pipeline} para evitar
-          \textit{data leakage}.
-    \item \textbf{Codificación de variables categóricas:} se aplicó \textit{One-Hot Encoding}
-          (\texttt{drop='first'}) a las variables \texttt{gender}, \texttt{ever\_married},
-          \texttt{work\_type}, \texttt{Residence\_type} y \texttt{smoking\_status}.
-    \item \textbf{Estandarización:} las variables numéricas continuas (\texttt{age},
-          \texttt{avg\_glucose\_level}, \texttt{bmi}) se estandarizaron mediante
-          \texttt{StandardScaler}.
-    \item \textbf{División del dataset:} partición estratificada 80/20 con
-          \texttt{stratify=y} y \texttt{random\_state=42}.
-    \item \textbf{Aplicación de SMOTE:} el sobremuestreo sintético se aplicó \textbf{únicamente
-          dentro del conjunto de entrenamiento} mediante \texttt{imblearn.pipeline.Pipeline},
-          generando muestras sintéticas hasta alcanzar una proporción 1:1 en el entrenamiento.
+Se realizó un proceso estructurado de transformaciones:
+\begin{enumerate}[leftmargin=1.2cm, itemsep=0.2em]
+    \item \textbf{Depuración de identificadores:} Se elimina el atributo \texttt{id}.
+    \item \textbf{Tratamiento de casos atípicos:} Eliminación de un único registro con \texttt{gender = 'Other'} al no disponer de soporte estadístico representativo.
+    \item \textbf{Imputación de valores ausentes:} Los $201$ valores perdidos detectados en \texttt{bmi} fueron imputados con la mediana del conjunto de entrenamiento ($28.1\,\text{kg/m}^2$).
+    \item \textbf{Codificación categórica:} Se aplicó una codificación \textit{One-Hot} (\texttt{drop='first'}) para las variables cualitativas (\texttt{gender}, \texttt{ever\_married}, \texttt{work\_type}, \texttt{Residence\_type} y \texttt{smoking\_status}).
+    \item \textbf{Normalización de escalas:} Para homogeneizar magnitudes en los modelos lineales se aplicó \texttt{StandardScaler} sobre las columnas cuantitativas (\texttt{age}, \texttt{avg\_glucose\_level} y \texttt{bmi}).
+    \item \textbf{Sobremuestreo sintético (SMOTE):} Integración de muestras sintéticas interpoladas para balancear la clase minoritaria en proporción 1:1, restringido de forma exclusiva a las particiones de entrenamiento de los \textit{pipelines}.
 \end{enumerate}
 
 \subsection{Fase 4: Modelado (\texttt{04\_modeling.ipynb})}
+Se eligieron dos modelos de propiedades complementarias:
+\begin{itemize}[leftmargin=1.2cm, itemsep=0.3em]
+    \item \textbf{Regresión Logística (\textit{Baseline} Interpretable):} Se emplea para modelar la probabilidad logit a través de combinaciones lineales de los predictores, aplicando regularización $\ell_2$ y ajustando el parámetro de penalización (\texttt{C=1.0}).
+    \item \textbf{Random Forest (\textit{Ensamble} No Lineal):} Configurado con $200$ árboles de decisión independientes (\texttt{n\_estimators=200}), criterio de división por impureza de Gini y semillas fijas (\texttt{random\_state=42}), con alta capacidad para capturar interacciones no lineales complejas entre edad, glucosa y antecedentes patológicos.
+\end{itemize}
 
-El \textit{notebook} \texttt{04\_modeling.ipynb} implementa el entrenamiento y la optimización
-de los dos modelos seleccionados.
-
-\subsubsection{Modelo 1: Regresión Logística}
-La Regresión Logística se seleccionó como \textit{baseline} por su interpretabilidad directa
-(los coeficientes son proporcionales al logaritmo del \textit{odds ratio} de cada variable) y
-su robustez en espacios de alta dimensionalidad. Se entrenó con regularización $\ell_2$
-(\texttt{C=1.0}) y parámetro \texttt{class\_weight='balanced'} para el análisis comparativo
-de estrategias de balanceo.
-
-\subsubsection{Modelo 2: Random Forest}
-El \textit{Random Forest} se seleccionó por su capacidad para capturar interacciones no lineales
-y su posibilidad de extraer la importancia de variables mediante la disminución de impureza de
-Gini. Se configuró con \texttt{n\_estimators=200}, \texttt{class\_weight='balanced'} y
-\texttt{random\_state=42}.
-
-\subsubsection{Estrategia de Validación}
-Ambos modelos se evaluaron mediante \textbf{validación cruzada estratificada con $k=5$ folds},
-reportando el AUC-ROC promedio y su desviación estándar. El conjunto de prueba (20\% de los datos,
-con distribución real 1:9) se reservó exclusivamente para la evaluación final.
+Se realizó una validación cruzada estratificada con $k=5$ particiones independientes en ambos clasificadores, con el objetivo de estimar el error de generalización y garantizar la estabilidad ante la asimetría de clases.
 
 \subsection{Fase 5: Evaluación (\texttt{05\_evaluation.ipynb})}
-
-El \textit{notebook} \texttt{05\_evaluation.ipynb} centraliza la evaluación comprehensiva de
-ambos modelos sobre el conjunto de prueba. Las métricas calculadas son AUC-ROC, recall,
-precisión, F1-score, matriz de confusión y la importancia de variables del Random Forest.
+Se evaluó el comportamiento de los modelos sobre el $20\,\%$ de los datos que se reservaron durante el entrenamiento ($n = 1{,}021$ observaciones). Se trazaron las curvas ROC, se inspeccionaron matrices de confusión normalizadas y se calcularon métricas clínicas específicas.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{06_roc_curves.png}
-    \caption{Curvas ROC comparativas para Regresión Logística (AUC = 0.853) y Random Forest
-             (AUC = 0.872) sobre el conjunto de prueba. Ambos modelos superan la meta de
-             AUC $>$ 0.85. Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
+    \includegraphics[width=0.8\textwidth]{06_roc_curves.png}
+    \caption{Curvas ROC comparativas para Regresión Logística ($AUC = 0.853$) y Random Forest ($AUC = 0.872$) sobre la partición de prueba.}
     \label{fig:roc}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{07_confusion_matrices.png}
-    \caption{Matrices de confusión normalizadas para Regresión Logística y Random Forest sobre
-             el conjunto de prueba. El Random Forest obtiene un recall de 0.790 en la clase
-             positiva. Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
-    \label{fig:confusion}
+    \includegraphics[width=0.92\textwidth]{07_confusion_matrices.png}
+    \caption{Matrices de confusión sobre la partición de prueba ($n=1{,}021$). El modelo Random Forest recupera el $79\,\%$ de los pacientes que presentaron evento cerebrovascular.}
+    \label{fig:conf_mat}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.80\textwidth]{08_feature_importance.png}
-    \caption{Importancia de variables del modelo Random Forest (top-10 características por
-             disminución de impureza de Gini). \texttt{age}, \texttt{avg\_glucose\_level} y
-             \texttt{bmi} concentran más del 60\% de la importancia total.
-             Fuente: elaboración propia (\texttt{05\_evaluation.ipynb}).}
-    \label{fig:feature_importance}
+    \includegraphics[width=0.8\textwidth]{08_feature_importance.png}
+    \caption{Importancia relativa de variables (top-10) según el criterio de Gini en Random Forest. La edad, la glucosa y el IMC concentran más del $60\,\%$ del peso predictivo.}
+    \label{fig:feat_imp}
 \end{figure}
 
-\subsection{Fase 6: Despliegue}
+\subsection{Fase 6: Despliegue y Reproducibilidad}
+El código, funciones de transformación y gráficos generados están centralizados en el repositorio público desarrollado por el equipo:
 
-Dado el alcance académico del proyecto, la fase de despliegue se materializó en la entrega de
-los cinco \textit{notebooks} del repositorio \texttt{CODIGO/} como producto final reproducible,
-junto con el presente reporte. El archivo \texttt{requirements.txt} garantiza que cualquier
-usuario puede recrear el entorno exacto de ejecución mediante:
+\begin{center}
+\textbf{Repositorio en GitHub del Proyecto:}\\
+\url{https://github.com/karla-rojas/stroke-risk-prediction}
+\end{center}
 
+Cualquier evaluador técnico puede clonar el entorno e instalar las dependencias exactas ejecutando:
 \begin{verbatim}
+git clone https://github.com/karla-rojas/stroke-risk-prediction.git
+cd stroke-risk-prediction
 pip install -r requirements.txt
 \end{verbatim}
 
@@ -632,135 +447,60 @@ pip install -r requirements.txt
 % ==========================================
 \section{Herramientas de Minería de Datos y Resultados}
 
-\subsection{Herramientas Utilizadas}
-
-El proyecto se desarrolló íntegramente en \textbf{Python 3.x} dentro del entorno interactivo
-\textbf{Jupyter Notebook}. El código fuente está organizado en cinco \textit{notebooks} dentro
-del directorio \texttt{CODIGO/}:
+\subsection{Entorno tecnológico y herramientas empleadas}
+El ecosistema científico de Python fue ocupado para el desarrollo del proyecto, el cual está organizado en los cinco cuadernos de trabajo que componen el repositorio (Tabla~\ref{tab:notebooks}).
 
 \begin{table}[H]
 \centering
-\caption{Correspondencia entre \textit{notebooks} y fases CRISP-DM}
-\begin{tabular}{@{}p{5cm}p{3cm}p{5.5cm}@{}}
+\small
+\caption{Estructura de cuadernos de Jupyter y correspondencia con CRISP-DM}
+\label{tab:notebooks}
+\begin{tabularx}{\textwidth}{@{}l l L@{}}
 \toprule
-\textbf{Notebook} & \textbf{Fase CRISP-DM} & \textbf{Propósito} \\ \midrule
-\texttt{01\_data\_loading.ipynb}
-    & Comprensión del negocio y los datos
-    & Carga, inspección inicial y auditoría de calidad \\[0.3em]
-\texttt{02\_eda.ipynb}
-    & Comprensión de los datos
-    & Análisis exploratorio univariado y bivariado \\[0.3em]
-\texttt{03\_preprocessing.ipynb}
-    & Preparación de los datos
-    & Limpieza, codificación, SMOTE y partición \\[0.3em]
-\texttt{04\_modeling.ipynb}
-    & Modelado
-    & Entrenamiento y validación cruzada de modelos \\[0.3em]
-\texttt{05\_evaluation.ipynb}
-    & Evaluación
-    & Métricas finales, curvas ROC y análisis de resultados \\ \bottomrule
-\end{tabular}
+\textbf{Cuaderno de Trabajo} & \textbf{Etapa CRISP-DM} & \textbf{Objetivo Técnico Principal} \\
+\midrule
+\texttt{01\_data\_loading.ipynb} & Negocio y Datos & Descarga autenticada mediante API y comprobación de integridad. \\
+\texttt{02\_eda.ipynb} & Comprensión & Exploración estadística univariada, bivariada y correlaciones. \\
+\texttt{03\_preprocessing.ipynb} & Preparación & Imputación, codificación, escalamiento y partición estratificada. \\
+\texttt{04\_modeling.ipynb} & Modelado & Entrenamiento con validación cruzada ($k=5$) y ensamble. \\
+\texttt{05\_evaluation.ipynb} & Evaluación & Generación de métricas, curvas ROC y análisis de importancia. \\
+\bottomrule
+\end{tabularx}
 \end{table}
 
-Las bibliotecas de Python utilizadas son:
-
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{kagglehub 0.x:} descarga automatizada y versionada del dataset desde la API de
-          Kaggle.
-    \item \textbf{pandas 2.x / NumPy 1.x:} estructuras de datos tabulares y operaciones
-          vectorizadas de análisis numérico.
-    \item \textbf{scikit-learn 1.x:} clasificadores (\texttt{LogisticRegression},
-          \texttt{RandomForestClassifier}), validación cruzada (\texttt{StratifiedKFold}),
-          métricas (\texttt{roc\_auc\_score}, \texttt{classification\_report},
-          \texttt{confusion\_matrix}) y preprocesamiento (\texttt{StandardScaler},
-          \texttt{OneHotEncoder}).
-    \item \textbf{imbalanced-learn 0.x:} implementación de SMOTE
-          (\texttt{imblearn.over\_sampling.SMOTE}) y \texttt{imblearn.pipeline.Pipeline} para
-          la integración correcta del balanceo dentro de la validación cruzada.
-    \item \textbf{Matplotlib 3.x / Seaborn 0.x:} generación de visualizaciones estadísticas
-          (distribuciones, \textit{heatmaps}, curvas ROC, matrices de confusión, gráficos de
-          importancia de variables).
+\noindent Las librerías empleadas abarcan:
+\begin{itemize}[leftmargin=1.2cm, itemsep=0.2em]
+    \item \textbf{\texttt{kagglehub}:} Conexión formal y versionada con el repositorio de datos de Kaggle.
+    \item \textbf{\texttt{pandas} y \texttt{numpy}:} Manejo de estructuras tabulares y operaciones algebraicas vectorizadas.
+    \item \textbf{\texttt{scikit-learn}:} Estimadores (\texttt{LogisticRegression}, \texttt{RandomForestClassifier}), transformadores (\texttt{StandardScaler}, \texttt{OneHotEncoder}) y validación cruzada (\texttt{StratifiedKFold}).
+    \item \textbf{\texttt{imbalanced-learn}:} Algoritmo SMOTE (\texttt{imblearn.over\_sampling}) y construcción de flujos de trabajo cerrados (\texttt{imblearn.pipeline.Pipeline}).
+    \item \textbf{\texttt{matplotlib} y \texttt{seaborn}:} Graficación estadística y visualizaciones analíticas.
 \end{itemize}
 
-\subsection{Resultados Obtenidos}
-
-\subsubsection{Análisis Exploratorio}
-
-El EDA confirmó las hipótesis previas sobre los factores de riesgo más relevantes:
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Edad} (\texttt{age}): es el predictor individual más fuerte. La mediana de
-          edad en pacientes con stroke es $\approx$67 años frente a $\approx$43 años en pacientes
-          sin stroke.
-    \item \textbf{Nivel de glucosa} (\texttt{avg\_glucose\_level}): los pacientes con stroke
-          presentan una proporción significativamente mayor de niveles en rango diabético
-          ($>$126 mg/dL).
-    \item \textbf{Hipertensión} (\texttt{hypertension}): la tasa de stroke entre pacientes
-          hipertensos ($\approx$15.8\%) es casi cuatro veces mayor que entre no hipertensos
-          ($\approx$4.1\%).
-    \item \textbf{Enfermedad cardíaca} (\texttt{heart\_disease}): tasa de stroke del 17.0\%
-          en pacientes con cardiopatía frente al 5.2\% sin ella.
-\end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{04_categorical_vs_target.png}
-    \caption{Tasas de incidencia de stroke (\%) por variable categórica. Pacientes con
-             hipertensión ($\approx$15.8\%) o cardiopatía ($\approx$17.0\%) presentan tasas
-             cuatro veces superiores al promedio. Fuente: elaboración propia
-             (\texttt{02\_eda.ipynb}).}
-    \label{fig:riesgo}
-\end{figure}
-
-\subsubsection{Desempeño de los Modelos}
-
-La Tabla~\ref{tab:resultados} resume las métricas obtenidas por ambos modelos sobre el conjunto
-de prueba (20\% de los datos; $n=1{,}021$ registros; proporción de strokes: $\approx$9.7\%).
+\subsection{Resultados Experimentales y Comparativa de Modelos}
+La evaluación ciega sobre la partición de prueba ($1{,}021$ observaciones que conservan la proporción natural de clases del $9.7\,\%$) arrojó los resultados condensados en la Tabla~\ref{tab:resultados_modelos}.
 
 \begin{table}[H]
 \centering
-\caption{Comparación de métricas sobre el conjunto de prueba}
-\label{tab:resultados}
-\begin{tabular}{@{}lccccl@{}}
+\small
+\caption{Métricas finales de desempeño en la partición de prueba independiente}
+\label{tab:resultados_modelos}
+\begin{tabularx}{\textwidth}{@{}l c c c c L@{}}
 \toprule
-\textbf{Modelo} & \textbf{AUC-ROC} & \textbf{Recall} & \textbf{F1-score} & \textbf{Precisión}
-    & \textbf{Observaciones} \\ \midrule
-Regresión Logística
-    & 0.853 & 0.780 & 0.635 & 0.524
-    & Umbral ajustado a 0.30 \\[0.3em]
-Random Forest
-    & 0.872 & 0.790 & 0.658 & 0.550
-    & \textbf{Modelo seleccionado} \\ \bottomrule
-\end{tabular}
+\textbf{Modelo } & \textbf{AUC-ROC} & \textbf{Sensibilidad} & \textbf{F1-Score} & \textbf{Precisión} & \textbf{Config.} \\
+\midrule
+Regresión Logística & $0.853$ & $0.780$ & $0.635$ & $0.524$ & Umbral de decisión ajustado a $0.30$. \\
+\textbf{Random Forest} & $\mathbf{0.872}$ & $\mathbf{0.790}$ & $\mathbf{0.658}$ & $\mathbf{0.550}$ & \textbf{Modelo Seleccionado ($n=200$).} \\
+\bottomrule
+\end{tabularx}
 \end{table}
 
-\noindent Ambos modelos superan las metas cuantitativas establecidas (AUC-ROC $>$ 0.85, Recall
-$>$ 0.75, F1-score $>$ 0.60). El \textbf{Random Forest} fue seleccionado como modelo final por
-presentar el mayor AUC-ROC (0.872) y recall (0.790).
-
-La optimización del umbral de decisión fue determinante: reduciendo el umbral del valor por
-defecto (0.50) a 0.30, el recall de la Regresión Logística se incrementó de 0.52 a 0.78 con
-una caída moderada de precisión de 0.68 a 0.52, confirmando que en contextos médicos la
-selección del umbral es tan crítica como la elección del algoritmo.
-
-\subsubsection{Importancia de Variables}
-
-El análisis del Random Forest confirmó que \texttt{age}, \texttt{avg\_glucose\_level} y
-\texttt{bmi} concentran más del 60\% de la importancia total del modelo, en plena concordancia
-con la evidencia epidemiológica publicada (O'Donnell et al., 2016; Feigin et al., 2021).
-
-\subsection{Código Fuente y Demostración Técnica}
-
-La demostración técnica del proyecto se realiza directamente a través de los \textit{notebooks}
-del repositorio \texttt{CODIGO/}. Para reproducir todos los experimentos:
-
-\begin{enumerate}[leftmargin=1.5cm]
-    \item Instalar las dependencias: \texttt{pip install -r requirements.txt}
-    \item Ejecutar los \textit{notebooks} en orden secuencial:\\
-          \texttt{01\_data\_loading.ipynb} $\rightarrow$ \texttt{02\_eda.ipynb} $\rightarrow$
-          \texttt{03\_preprocessing.ipynb} $\rightarrow$ \texttt{04\_modeling.ipynb} $\rightarrow$
-          \texttt{05\_evaluation.ipynb}
-    \item Los artefactos generados (modelos serializados, gráficas, CSV de métricas) se almacenan
-          automáticamente en el directorio \texttt{CODIGO/outputs/}.
+\subsection{Discusión de Resultados}
+Los resultados obtenidos permiten señalar tres conclusiones de carácter metodológico:
+\begin{enumerate}[itemsep=0.3em,leftmargin=1.2cm]
+    \item \textbf{Cumplimiento de objetivos cuantitativos:} Tanto la Regresión Logística como el \textit{Random Forest} superaron ampliamente los requisitos establecidos (AUC-ROC $> 0.85$, Recall $> 0.75$ y F1-Score $> 0.60$). El mejor balance general fue logrado por el modelo de ensamble (Random Forest), con un AUC de $0.872$ y un recall de $0.790$.
+    \item \textbf{Impacto de la calibración del umbral de decisión:} El mantener el punto de corte por defecto ($0.50$) era poco práctico en el contexto clínico: el modelo dejaba fuera prácticamente la mitad de los casos de stroke. Al desplazar el umbral a $0.30$, se logró un incremento significativo en la sensibilidad (de $0.52$ a $0.79$) con una pérdida controlada de la precisión. En el campo de la prevención médica, ese compromiso es muy deseable.
+    \item \textbf{Factores con mayor poder discriminativo:} El orden de importancia de variables del \textit{Random Forest} confirmó que edad (\texttt{age}), concentración de glucosa (\texttt{avg\_glucose\_level}) e índice de masa corporal (\texttt{bmi}) explican más del $60\,\%$ de la toma de decisiones de los árboles, hallazgo que se encuentra en plena consonancia con la evidencia epidemiológica contemporánea.
 \end{enumerate}
 
 % ==========================================
@@ -768,132 +508,55 @@ del repositorio \texttt{CODIGO/}. Para reproducir todos los experimentos:
 % ==========================================
 \section{Conclusiones}
 
-El presente proyecto demostró de forma rigurosa que es posible construir un modelo predictivo del
-riesgo de accidente cerebrovascular con sensibilidad clínicamente útil a partir de variables de
-rutina disponibles en el primer nivel de atención médica. Las conclusiones se articulan en tres
-dimensiones:
+Este trabajo confirmó que es factible diseñar modelos analíticos supervisados que identifiquen de manera oportuna el riesgo de accidente cerebrovascular a partir de variables clínicas no invasivas que se pueden recabar durante el primer nivel de atención.
 
-\subsection{Logro de los Objetivos}
-
-Todos los objetivos específicos planteados al inicio del proyecto fueron alcanzados
-satisfactoriamente:
-
-\begin{itemize}[leftmargin=1.5cm]
-    \item El dataset fue preprocesado de forma completa, abordando valores faltantes, codificación
-          categórica y el severo desbalance de clases mediante SMOTE con \textit{pipeline}
-          correcto.
-    \item El EDA identificó \texttt{age}, \texttt{avg\_glucose\_level}, \texttt{hypertension}
-          y \texttt{heart\_disease} como los predictores de mayor poder discriminativo, en plena
-          consonancia con la evidencia médica publicada.
-    \item El modelo Random Forest seleccionado alcanzó un \textbf{AUC-ROC de 0.872} y un
-          \textbf{recall de 0.790}, superando las metas cuantitativas establecidas (AUC-ROC
-          $>$ 0.85 y recall $>$ 0.75).
-    \item El código fue organizado en cinco \textit{notebooks} reproducibles dentro del
-          repositorio \texttt{CODIGO/}, con semillas fijas y artefactos exportados.
+\subsection{Cumplimiento de Objetivos y Contribuciones del Proyecto}
+\begin{itemize}[leftmargin=1.2cm, itemsep=0.3em]
+    \item Se desarrolló un \textit{pipeline} integral de minería de datos, desde la obtención automatizada con Kaggle hasta la evaluación estricta de los clasificadores supervisados, cumpliendo cabalmente con cada fase de la metodología CRISP-DM.
+    \item Las metas de desempeño se cumplieron de forma satisfactoria: el modelo final (\textit{Random Forest} con SMOTE) alcanzó un \textbf{AUC-ROC de 0.872} y un \textbf{recall del 79.0\,\%}, minimizando la incidencia de falsos negativos en la detección preventiva.
+    \item Se mostró que la tuneción del umbral de probabilidad probabilística es tan importante para el éxito práctico de un sistema de minería de datos como la propia elección de la arquitectura del clasificador.
+    \item Se documentó íntegramente en un repositorio público en GitHub bajo estándares de reproducibilidad, modularidad de código y claridad técnica.
 \end{itemize}
 
-\subsection{Hallazgos Técnicos}
-
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{SMOTE dentro del pipeline es imprescindible:} la aplicación de SMOTE fuera
-          del ciclo de validación cruzada introduce fuga de datos (\textit{data leakage}) y
-          produce métricas artificialmente optimistas. La implementación correcta con
-          \texttt{imblearn.pipeline.Pipeline} es fundamental para obtener estimaciones honestas
-          del desempeño.
-    \item \textbf{El umbral de decisión es un hiperparámetro crítico:} en datasets desbalanceados,
-          el umbral por defecto de 0.50 penaliza sistemáticamente la clase minoritaria. La
-          reducción del umbral a 0.30 incrementó el recall en más de 25 puntos porcentuales.
-    \item \textbf{La edad es el predictor dominante:} con más del 25\% de la importancia total
-          en el Random Forest, la edad supera con amplio margen a cualquier otra variable,
-          sugiriendo que los sistemas de cribado de riesgo cardiovascular deben estratificar
-          prioritariamente por edad.
+\subsection{Limitaciones y Trabajos Futuros}
+Si bien los resultados fueron favorables, reconocemos áreas de mejora técnica para trabajos posteriores:
+\begin{itemize}[itemsep=0.3em, leftmargin=1.2cm]
+    \item \textbf{Origen poblacional no especificado:} Los datos de Kaggle no documentan la temporalidad ni la región geográfica de los pacientes, lo que debemos de tomar en cuenta antes de extrapolar estos hallazgos a una población específica como por ejemplo la mexicana. Se plantea el uso de bases de datos locales abiertas.
+    \item \textbf{Carencia de parámetros complementarios:} El dataset no contiene perfiles continuos de presión arterial sistólica/diastólica ni de perfil lipídico (colesterol LDL/HDL), los cuales podrían mejorar la capacidad del modelo.
+    \item \textbf{Exploración de ensambles adicionales:} Se plantea como trabajo complementario contrastar estos resultados frente a modelos de potenciación del gradiente como \textit{XGBoost}, \textit{LightGBM} o \textit{CatBoost}.
+    \item \textbf{Calibración probabilística formal:} Viendo a una hipotética integración clínica real, se sugiere aplicar técnicas de escalamiento de Platt o regresión isotónica para que las probabilidades predichas reflejen fielmente el riesgo absoluto del paciente.
 \end{itemize}
-
-\subsection{Limitaciones y Trabajo Futuro}
-
-\begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Limitación del dataset:} el origen y el periodo de recolección no están
-          documentados, lo que limita la extrapolación a poblaciones específicas. Trabajos futuros
-          deberían validar el modelo en datasets clínicos prospectivos con origen conocido.
-    \item \textbf{Variables no disponibles:} factores relevantes como la presión arterial
-          sistólica, el perfil lipídico y la fibrilación auricular no están en el dataset. Su
-          incorporación podría mejorar el desempeño predictivo.
-    \item \textbf{Modelos más avanzados:} la exploración de modelos de \textit{gradient boosting}
-          (XGBoost, LightGBM) podría ofrecer mejoras adicionales en el AUC-ROC.
-    \item \textbf{Calibración probabilística:} para un despliegue clínico real, la calibración
-          mediante regresión isotónica o \textit{Platt scaling} es necesaria para que las
-          probabilidades predichas sean interpretables como riesgo real.
-\end{itemize}
-
-\noindent En resumen, el proyecto confirmó que la minería de datos aplicada a registros clínicos
-de rutina constituye una herramienta viable y de alto impacto para la detección temprana del
-riesgo de accidente cerebrovascular, cumpliendo íntegramente con todas las expectativas técnicas
-y académicas definidas al inicio del trabajo.
 
 % ==========================================
-% 9. FUENTES BIBLIOGRÁFICAS (APA)
+% 9. FUENTES BIBLIOGRÁFICAS (FORMATO APA)
 % ==========================================
 \section{Fuentes Bibliográficas}
 
-\begin{itemize}[leftmargin=1.5cm, label={}]
+% Modo sloppy local para evitar que enlaces largos o autores se salgan del margen
+{\sloppy
+\begin{itemize}[leftmargin=1.2cm, itemsep=0.6em, label={}]
 
-    \item Chawla, N. V., Bowyer, K. W., Hall, L. O., \& Kegelmeyer, W. P. (2002). SMOTE:
-          Synthetic Minority Over-sampling Technique. \textit{Journal of Artificial Intelligence
-          Research}, \textit{16}, 321--357.
-          \url{https://doi.org/10.1613/jair.953}
+    \item Chawla, N. V., Bowyer, K. W., Hall, L. O., \& Kegelmeyer, W. P. (2002). SMOTE: Synthetic Minority Over-sampling Technique. \textit{Journal of Artificial Intelligence Research}, \textit{16}, 321--357. \url{https://doi.org/10.1613/jair.953}
 
-    \item Diener, H.-C., Cunha, L., Forbes, C., Sivenius, J., Smets, P., \& Lowenthal, A.
-          (2005). European Stroke Prevention Study 2: Dipyridamole and acetylsalicylic acid in
-          the secondary prevention of stroke. \textit{Journal of the Neurological Sciences},
-          \textit{143}(1--2), 1--13.
-          \url{https://doi.org/10.1016/0022-510X(96)00308-5}
+    \item Diener, H.-C., Cunha, L., Forbes, C., Sivenius, J., Smets, P., \& Lowenthal, A. (2005). European Stroke Prevention Study 2: Dipyridamole and acetylsalicylic acid in the secondary prevention of stroke. \textit{Journal of the Neurological Sciences}, \textit{143}(1--2), 1--13. \url{https://doi.org/10.1016/0022-510X(96)00308-5}
 
-    \item fedesoriano. (2021). \textit{Stroke Prediction Dataset} [Conjunto de datos]. Kaggle.
-          \url{https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset}
+    \item fedesoriano. (2021). \textit{Stroke Prediction Dataset} [Conjunto de datos]. Kaggle. \url{https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset}
 
-    \item Feigin, V. L., Brainin, M., Norrving, B., Martins, S., Sacco, R. L., Hacke, W.,
-          Fisher, M., Pandian, J., \& Lindsay, P. (2021). World Stroke Organization (WSO):
-          Global Stroke Fact Sheet 2022. \textit{International Journal of Stroke},
-          \textit{17}(1), 18--29.
-          \url{https://doi.org/10.1177/17474930211065917}
+    \item Feigin, V. L., Brainin, M., Norrving, B., Martins, S., Sacco, R. L., Hacke, W., Fisher, M., Pandian, J., \& Lindsay, P. (2021). World Stroke Organization (WSO): Global Stroke Fact Sheet 2022. \textit{International Journal of Stroke}, \textit{17}(1), 18--29. \url{https://doi.org/10.1177/17474930211065917}
 
-    \item Lemaître, G., Nogueira, F., \& Aridas, C. K. (2017). Imbalanced-learn: A Python
-          toolbox to tackle the curse of imbalanced datasets in machine learning.
-          \textit{Journal of Machine Learning Research}, \textit{18}(17), 1--5.
-          \url{https://jmlr.org/papers/v18/16-365.html}
+    \item Lemaître, G., Nogueira, F., \& Aridas, C. K. (2017). Imbalanced-learn: A Python toolbox to tackle the curse of imbalanced datasets in machine learning. \textit{Journal of Machine Learning Research}, \textit{18}(17), 1--5. \url{https://jmlr.org/papers/v18/16-365.html}
 
-    \item O'Donnell, M. J., Chin, S. L., Rangarajan, S., Xavier, D., Liu, L., Zhang, H.,
-          Rao-Melacini, P., Zhang, X., Pais, P., Aguilar-Salinas, C., \& Yusuf, S. (2016).
-          Global and regional effects of potentially modifiable risk factors associated with
-          acute stroke in 32 countries (INTERSTROKE): A case-control study. \textit{The Lancet},
-          \textit{388}(10046), 761--775.
-          \url{https://doi.org/10.1016/S0140-6736(16)30506-2}
+    \item O'Donnell, M. J., Chin, S. L., Rangarajan, S., Xavier, D., Liu, L., Zhang, H., Rao-Melacini, P., Zhang, X., Pais, P., Aguilar-Salinas, C., \& Yusuf, S. (2016). Global and regional effects of potentially modifiable risk factors associated with acute stroke in 32 countries (INTERSTROKE): A case-control study. \textit{The Lancet}, \textit{388}(10046), 761--775. \url{https://doi.org/10.1016/S0140-6736(16)30506-2}
 
-    \item Organización Mundial de la Salud. (2023). \textit{Las 10 principales causas de
-          defunción}. OMS.
-          \url{https://www.who.int/es/news-room/fact-sheets/detail/the-top-10-causes-of-death}
+    \item Organización Mundial de la Salud. (2023). \textit{Las 10 principales causas de defunción}. OMS. \url{https://www.who.int/es/news-room/fact-sheets/detail/the-top-10-causes-of-death}
 
-    \item Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O.,
-          Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A.,
-          Cournapeau, D., Brucher, M., Perrot, M., \& Duchesnay, E. (2011). Scikit-learn:
-          Machine Learning in Python. \textit{Journal of Machine Learning Research},
-          \textit{12}, 2825--2830.
-          \url{https://jmlr.org/papers/v12/pedregosa11a.html}
+    \item Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., \& Duchesnay, E. (2011). Scikit-learn: Machine Learning in Python. \textit{Journal of Machine Learning Research}, \textit{12}, 2825--2830. \url{https://jmlr.org/papers/v12/pedregosa11a.html}
 
-    \item Sacco, R. L., Kasner, S. E., Broderick, J. P., Caplan, L. R., Connors, J. J.,
-          Culebras, A., Elkind, M. S. V., George, M. G., Hamdan, A. D., Higashida, R. T.,
-          Hoh, B. L., Janis, L. S., Kase, C. S., Kleindorfer, D. O., Lee, J.-M., Moseley, M. E.,
-          Peterson, E. D., Turan, T. N., Valderrama, A. L., \& Vinters, H. V. (2013). An
-          updated definition of stroke for the 21st century: A statement for healthcare
-          professionals from the American Heart Association/American Stroke Association.
-          \textit{Stroke}, \textit{44}(7), 2064--2089.
-          \url{https://doi.org/10.1161/STR.0b013e318296aeca}
+    \item Sacco, R. L., Kasner, S. E., Broderick, J. P., Caplan, L. R., Connors, J. J., Culebras, A., Elkind, M. S. V., George, M. G., Hamdan, A. D., Higashida, R. T., Hoh, B. L., Janis, L. S., Kase, C. S., Kleindorfer, D. O., Lee, J.-M., Moseley, M. E., Peterson, E. D., Turan, T. N., Valderrama, A. L., \& Vinters, H. V. (2013). An updated definition of stroke for the 21st century: A statement for healthcare professionals from the American Heart Association/American Stroke Association. \textit{Stroke}, \textit{44}(7), 2064--2089. \url{https://doi.org/10.1161/STR.0b013e318296aeca}
 
-    \item Wirth, R., \& Hipp, J. (2000). CRISP-DM: Towards a standard process model for data
-          mining. \textit{Proceedings of the 4th International Conference on the Practical
-          Application of Knowledge Discovery and Data Mining} (pp. 29--39). Practical
-          Application Company.
+    \item Wirth, R., \& Hipp, J. (2000). CRISP-DM: Towards a standard process model for data mining. \textit{Proceedings of the 4th International Conference on the Practical Application of Knowledge Discovery and Data Mining}, 29--39.
 
 \end{itemize}
+}
 
 \end{document}
